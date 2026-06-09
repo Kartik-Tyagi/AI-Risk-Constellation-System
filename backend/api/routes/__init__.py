@@ -7,7 +7,8 @@ from backend.api.routes import (
     risk_routes,
     graph_routes,
     market_routes,
-    query_routes
+    query_routes,
+    monitoring_routes
 )
 
 __all__ = [
@@ -15,7 +16,8 @@ __all__ = [
     "risk_routes",
     "graph_routes",
     "market_routes",
-    "query_routes"
+    "query_routes",
+    "monitoring_routes"
 ]
 
 # Made with Bob

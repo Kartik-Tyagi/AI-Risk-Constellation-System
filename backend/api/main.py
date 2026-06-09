@@ -19,7 +19,8 @@ from backend.api.routes import (
     risk_routes,
     graph_routes,
     market_routes,
-    query_routes
+    query_routes,
+    monitoring_routes
 )
 from backend.api.error_handlers import (
     validation_exception_handler,
@@ -233,6 +234,12 @@ app.include_router(
     query_routes.router,
     prefix="/api/v1/query",
     tags=["Natural Language Query"]
+)
+
+app.include_router(
+    monitoring_routes.router,
+    prefix="/api/v1/monitoring",
+    tags=["Monitoring"]
 )
 
 
