@@ -1,0 +1,109 @@
+version: '3.8'
+
+services:
+  # PostgreSQL - Relational Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: risk-postgres
+    environment:
+      POSTGRES_USER: riskuser
+      POSTGRES_PASSWORD: riskpass
+      POSTGRES_DB: risk_constellation
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U riskuser"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - risk-network
+
+  # Neo4j - Graph Database
+  neo4j:
+    image: neo4j:5.14-community
+    container_name: risk-neo4j
+    environment:
+      NEO4J_AUTH: neo4j/riskpass123
+      NEO4J_PLUGINS: '["apoc", "graph-data-science"]'
+      NEO4J_dbms_memory_heap_max__size: 2G
+      NEO4J_dbms_memory_pagecache_size: 1G
+    ports:
+      - "7474:7474"  # HTTP
+      - "7687:7687"  # Bolt
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+      - neo4j_import:/var/lib/neo4j/import
+      - neo4j_plugins:/plugins
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p riskpass123 'RETURN 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - risk-network
+
+  # Redis - Caching Layer
+  redis:
+    image: redis:7-alpine
+    container_name: risk-redis
+    command: redis-server --appendonly yes --requirepass riskredis123
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - risk-network
+
+  # MLflow Tracking Server
+  mlflow:
+    image: python:3.11-slim
+    container_name: risk-mlflow
+    working_dir: /mlflow
+    command: >
+      bash -c "pip install mlflow psycopg2-binary &&
+               mlflow server 
+               --backend-store-uri postgresql://riskuser:riskpass@postgres:5432/mlflow
+               --default-artifact-root /mlflow/artifacts
+               --host 0.0.0.0
+               --port 5000"
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow_data:/mlflow
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - risk-network
+
+volumes:
+  postgres_data:
+    driver: local
+  neo4j_data:
+    driver: local
+  neo4j_logs:
+    driver: local
+  neo4j_import:
+    driver: local
+  neo4j_plugins:
+    driver: local
+  redis_data:
+    driver: local
+  mlflow_data:
+    driver: local
+
+networks:
+  risk-network:
+    driver: bridge
+
+# Made with Bob
