@@ -1,0 +1,211 @@
+{
+  "template_id": "audit_trail",
+  "name": "Audit Trail Report",
+  "version": "1.0",
+  "description": "Comprehensive audit trail of system activities, user actions, and risk calculations",
+  "sections": [
+    {
+      "id": "report_summary",
+      "title": "Audit Report Summary",
+      "type": "text",
+      "fields": [
+        "report_date",
+        "audit_period_start",
+        "audit_period_end",
+        "total_events",
+        "unique_users",
+        "unique_entities",
+        "critical_events_count"
+      ]
+    },
+    {
+      "id": "event_statistics",
+      "title": "Event Statistics",
+      "type": "table",
+      "fields": [
+        "event_type",
+        "event_count",
+        "percentage_of_total",
+        "unique_users",
+        "average_per_day"
+      ]
+    },
+    {
+      "id": "severity_breakdown",
+      "title": "Events by Severity",
+      "type": "chart",
+      "chart_type": "pie",
+      "fields": [
+        "severity_levels",
+        "event_counts",
+        "percentages"
+      ]
+    },
+    {
+      "id": "user_activity",
+      "title": "User Activity Summary",
+      "type": "table",
+      "fields": [
+        "user_id",
+        "user_name",
+        "total_actions",
+        "risk_calculations",
+        "reports_generated",
+        "alerts_triggered",
+        "last_activity",
+        "activity_score"
+      ]
+    },
+    {
+      "id": "risk_calculations",
+      "title": "Risk Calculation Audit",
+      "type": "table",
+      "fields": [
+        "calculation_id",
+        "timestamp",
+        "entity_id",
+        "user_id",
+        "model_version",
+        "risk_score",
+        "input_parameters",
+        "calculation_time_ms"
+      ]
+    },
+    {
+      "id": "data_changes",
+      "title": "Data Modification Log",
+      "type": "table",
+      "fields": [
+        "change_id",
+        "timestamp",
+        "entity_id",
+        "field_changed",
+        "old_value",
+        "new_value",
+        "changed_by",
+        "change_reason"
+      ]
+    },
+    {
+      "id": "system_events",
+      "title": "System Events",
+      "type": "table",
+      "fields": [
+        "event_id",
+        "timestamp",
+        "event_type",
+        "component",
+        "severity",
+        "description",
+        "impact_assessment"
+      ]
+    },
+    {
+      "id": "alert_history",
+      "title": "Alert Trigger History",
+      "type": "table",
+      "fields": [
+        "alert_id",
+        "timestamp",
+        "alert_type",
+        "entity_id",
+        "severity",
+        "triggered_by",
+        "acknowledgment_status",
+        "resolution_time"
+      ]
+    },
+    {
+      "id": "access_control",
+      "title": "Access Control Events",
+      "type": "table",
+      "fields": [
+        "event_id",
+        "timestamp",
+        "user_id",
+        "resource_accessed",
+        "action_attempted",
+        "access_granted",
+        "denial_reason",
+        "ip_address"
+      ]
+    },
+    {
+      "id": "error_log",
+      "title": "Error and Exception Log",
+      "type": "table",
+      "fields": [
+        "error_id",
+        "timestamp",
+        "error_type",
+        "component",
+        "error_message",
+        "user_id",
+        "stack_trace",
+        "resolution_status"
+      ]
+    },
+    {
+      "id": "configuration_changes",
+      "title": "Configuration Changes",
+      "type": "table",
+      "fields": [
+        "change_id",
+        "timestamp",
+        "config_key",
+        "old_value",
+        "new_value",
+        "changed_by",
+        "approval_status",
+        "rollback_available"
+      ]
+    },
+    {
+      "id": "activity_timeline",
+      "title": "Activity Timeline",
+      "type": "chart",
+      "chart_type": "line",
+      "fields": [
+        "timestamps",
+        "event_counts_by_hour",
+        "user_activity_counts",
+        "system_event_counts"
+      ]
+    },
+    {
+      "id": "anomalies",
+      "title": "Detected Anomalies",
+      "type": "table",
+      "fields": [
+        "anomaly_id",
+        "detection_time",
+        "anomaly_type",
+        "description",
+        "severity",
+        "affected_entities",
+        "investigation_status"
+      ]
+    },
+    {
+      "id": "compliance_notes",
+      "title": "Compliance and Audit Notes",
+      "type": "text",
+      "fields": [
+        "key_findings",
+        "compliance_issues",
+        "recommendations",
+        "follow_up_actions",
+        "auditor_comments"
+      ]
+    }
+  ],
+  "footer": {
+    "fields": [
+      "generated_by",
+      "generation_timestamp",
+      "audit_scope",
+      "data_retention_policy",
+      "next_audit_date"
+    ]
+  }
+}

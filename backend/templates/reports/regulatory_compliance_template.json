@@ -1,0 +1,170 @@
+{
+  "template_id": "regulatory_compliance",
+  "name": "Regulatory Compliance Report",
+  "version": "1.0",
+  "description": "Comprehensive regulatory compliance status and requirements tracking",
+  "sections": [
+    {
+      "id": "compliance_summary",
+      "title": "Compliance Summary",
+      "type": "text",
+      "fields": [
+        "report_date",
+        "reporting_period",
+        "regulatory_framework",
+        "jurisdiction",
+        "overall_compliance_status",
+        "number_of_requirements",
+        "compliance_percentage"
+      ]
+    },
+    {
+      "id": "capital_adequacy",
+      "title": "Capital Adequacy Requirements",
+      "type": "table",
+      "fields": [
+        "total_capital",
+        "tier_1_capital",
+        "tier_2_capital",
+        "risk_weighted_assets",
+        "capital_adequacy_ratio",
+        "tier_1_ratio",
+        "leverage_ratio",
+        "minimum_requirements",
+        "buffer_amounts",
+        "compliance_status"
+      ]
+    },
+    {
+      "id": "liquidity_requirements",
+      "title": "Liquidity Coverage Requirements",
+      "type": "table",
+      "fields": [
+        "high_quality_liquid_assets",
+        "total_net_cash_outflows",
+        "liquidity_coverage_ratio",
+        "net_stable_funding_ratio",
+        "minimum_lcr_requirement",
+        "minimum_nsfr_requirement",
+        "compliance_status"
+      ]
+    },
+    {
+      "id": "large_exposure_limits",
+      "title": "Large Exposure Limits",
+      "type": "table",
+      "fields": [
+        "counterparty_id",
+        "exposure_amount",
+        "exposure_limit",
+        "utilization_percentage",
+        "limit_type",
+        "compliance_status"
+      ]
+    },
+    {
+      "id": "market_risk_limits",
+      "title": "Market Risk Limits",
+      "type": "table",
+      "fields": [
+        "risk_category",
+        "current_exposure",
+        "regulatory_limit",
+        "utilization_percentage",
+        "var_measure",
+        "stressed_var",
+        "compliance_status"
+      ]
+    },
+    {
+      "id": "operational_risk",
+      "title": "Operational Risk Capital",
+      "type": "table",
+      "fields": [
+        "business_line",
+        "gross_income",
+        "beta_factor",
+        "capital_requirement",
+        "actual_capital_held",
+        "compliance_status"
+      ]
+    },
+    {
+      "id": "reporting_obligations",
+      "title": "Regulatory Reporting Obligations",
+      "type": "table",
+      "fields": [
+        "report_name",
+        "frequency",
+        "last_submission_date",
+        "next_due_date",
+        "submission_status",
+        "regulatory_body"
+      ]
+    },
+    {
+      "id": "policy_compliance",
+      "title": "Internal Policy Compliance",
+      "type": "table",
+      "fields": [
+        "policy_name",
+        "policy_category",
+        "compliance_status",
+        "last_review_date",
+        "next_review_date",
+        "exceptions_count",
+        "remediation_status"
+      ]
+    },
+    {
+      "id": "breaches_violations",
+      "title": "Breaches and Violations",
+      "type": "table",
+      "fields": [
+        "breach_id",
+        "breach_date",
+        "requirement_breached",
+        "severity",
+        "description",
+        "root_cause",
+        "remediation_plan",
+        "status",
+        "target_resolution_date"
+      ]
+    },
+    {
+      "id": "stress_test_results",
+      "title": "Regulatory Stress Test Results",
+      "type": "table",
+      "fields": [
+        "scenario_name",
+        "capital_impact",
+        "post_stress_capital_ratio",
+        "minimum_requirement",
+        "pass_fail_status"
+      ]
+    },
+    {
+      "id": "recommendations",
+      "title": "Compliance Recommendations",
+      "type": "text",
+      "fields": [
+        "critical_actions",
+        "remediation_priorities",
+        "policy_updates_required",
+        "training_needs",
+        "system_enhancements"
+      ]
+    }
+  ],
+  "footer": {
+    "fields": [
+      "prepared_by",
+      "reviewed_by",
+      "approved_by",
+      "generation_timestamp",
+      "confidentiality_classification",
+      "distribution_list"
+    ]
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "template_id": "portfolio_risk",
+  "name": "Portfolio Risk Report",
+  "version": "1.0",
+  "description": "Detailed portfolio-level risk analysis and exposure breakdown",
+  "sections": [
+    {
+      "id": "portfolio_overview",
+      "title": "Portfolio Overview",
+      "type": "text",
+      "fields": [
+        "portfolio_id",
+        "portfolio_name",
+        "total_value",
+        "number_of_positions",
+        "reporting_date",
+        "base_currency"
+      ]
+    },
+    {
+      "id": "risk_summary",
+      "title": "Portfolio Risk Summary",
+      "type": "table",
+      "fields": [
+        "portfolio_var_95",
+        "portfolio_var_99",
+        "portfolio_cvar",
+        "sharpe_ratio",
+        "sortino_ratio",
+        "max_drawdown",
+        "beta",
+        "correlation_to_market"
+      ]
+    },
+    {
+      "id": "sector_exposure",
+      "title": "Sector Exposure Analysis",
+      "type": "chart",
+      "chart_type": "pie",
+      "fields": [
+        "sector_names",
+        "sector_values",
+        "sector_percentages",
+        "sector_risk_contributions"
+      ]
+    },
+    {
+      "id": "geographic_exposure",
+      "title": "Geographic Exposure",
+      "type": "chart",
+      "chart_type": "bar",
+      "fields": [
+        "countries",
+        "exposure_amounts",
+        "risk_scores_by_country"
+      ]
+    },
+    {
+      "id": "concentration_risk",
+      "title": "Concentration Risk Analysis",
+      "type": "table",
+      "fields": [
+        "top_10_positions",
+        "position_values",
+        "position_percentages",
+        "individual_vars",
+        "concentration_index"
+      ]
+    },
+    {
+      "id": "correlation_matrix",
+      "title": "Asset Correlation Matrix",
+      "type": "heatmap",
+      "fields": [
+        "asset_names",
+        "correlation_values"
+      ]
+    },
+    {
+      "id": "stress_testing",
+      "title": "Stress Test Results",
+      "type": "table",
+      "fields": [
+        "scenario_names",
+        "scenario_descriptions",
+        "portfolio_impacts",
+        "probability_estimates"
+      ]
+    },
+    {
+      "id": "risk_decomposition",
+      "title": "Risk Contribution by Asset",
+      "type": "chart",
+      "chart_type": "waterfall",
+      "fields": [
+        "asset_ids",
+        "marginal_vars",
+        "component_vars",
+        "percentage_contributions"
+      ]
+    }
+  ],
+  "footer": {
+    "fields": [
+      "generated_by",
+      "generation_timestamp",
+      "methodology_notes",
+      "disclaimer"
+    ]
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "template_id": "counterparty_exposure",
+  "name": "Counterparty Exposure Report",
+  "version": "1.0",
+  "description": "Detailed analysis of counterparty credit risk and exposure limits",
+  "sections": [
+    {
+      "id": "executive_summary",
+      "title": "Executive Summary",
+      "type": "text",
+      "fields": [
+        "report_date",
+        "total_counterparties",
+        "total_exposure",
+        "number_of_breaches",
+        "high_risk_counterparties"
+      ]
+    },
+    {
+      "id": "exposure_overview",
+      "title": "Exposure Overview",
+      "type": "table",
+      "fields": [
+        "gross_exposure",
+        "net_exposure",
+        "collateral_held",
+        "uncollateralized_exposure",
+        "potential_future_exposure",
+        "credit_valuation_adjustment"
+      ]
+    },
+    {
+      "id": "top_exposures",
+      "title": "Top 20 Counterparty Exposures",
+      "type": "table",
+      "fields": [
+        "counterparty_id",
+        "counterparty_name",
+        "credit_rating",
+        "exposure_amount",
+        "exposure_limit",
+        "utilization_percentage",
+        "collateral_coverage",
+        "risk_score"
+      ]
+    },
+    {
+      "id": "exposure_by_rating",
+      "title": "Exposure by Credit Rating",
+      "type": "chart",
+      "chart_type": "bar",
+      "fields": [
+        "credit_ratings",
+        "exposure_amounts",
+        "counterparty_counts",
+        "average_risk_scores"
+      ]
+    },
+    {
+      "id": "exposure_by_industry",
+      "title": "Industry Concentration",
+      "type": "chart",
+      "chart_type": "pie",
+      "fields": [
+        "industry_sectors",
+        "exposure_amounts",
+        "percentage_of_total"
+      ]
+    },
+    {
+      "id": "limit_breaches",
+      "title": "Exposure Limit Breaches",
+      "type": "table",
+      "fields": [
+        "counterparty_id",
+        "counterparty_name",
+        "current_exposure",
+        "exposure_limit",
+        "breach_amount",
+        "breach_percentage",
+        "breach_date",
+        "action_required"
+      ]
+    },
+    {
+      "id": "wrong_way_risk",
+      "title": "Wrong-Way Risk Analysis",
+      "type": "table",
+      "fields": [
+        "counterparty_id",
+        "exposure_type",
+        "correlation_indicator",
+        "risk_level",
+        "mitigation_measures"
+      ]
+    },
+    {
+      "id": "exposure_trends",
+      "title": "Exposure Trends (Last 12 Months)",
+      "type": "chart",
+      "chart_type": "line",
+      "fields": [
+        "dates",
+        "total_exposures",
+        "average_utilizations",
+        "breach_counts"
+      ]
+    },
+    {
+      "id": "credit_migration",
+      "title": "Credit Rating Migration",
+      "type": "table",
+      "fields": [
+        "counterparty_id",
+        "previous_rating",
+        "current_rating",
+        "migration_date",
+        "exposure_amount",
+        "impact_assessment"
+      ]
+    },
+    {
+      "id": "recommendations",
+      "title": "Risk Management Actions",
+      "type": "text",
+      "fields": [
+        "immediate_actions",
+        "monitoring_requirements",
+        "limit_adjustments",
+        "collateral_requirements"
+      ]
+    }
+  ],
+  "footer": {
+    "fields": [
+      "generated_by",
+      "generation_timestamp",
+      "data_sources",
+      "next_review_date"
+    ]
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "template_id": "risk_summary",
+  "name": "Risk Summary Report",
+  "version": "1.0",
+  "description": "Comprehensive overview of portfolio risk metrics",
+  "sections": [
+    {
+      "id": "executive_summary",
+      "title": "Executive Summary",
+      "type": "text",
+      "fields": [
+        "report_date",
+        "reporting_period",
+        "total_entities",
+        "high_risk_count",
+        "medium_risk_count",
+        "low_risk_count"
+      ]
+    },
+    {
+      "id": "risk_metrics",
+      "title": "Key Risk Metrics",
+      "type": "table",
+      "fields": [
+        "average_risk_score",
+        "max_risk_score",
+        "min_risk_score",
+        "risk_score_std_dev",
+        "var_95",
+        "var_99",
+        "expected_shortfall"
+      ]
+    },
+    {
+      "id": "risk_distribution",
+      "title": "Risk Distribution",
+      "type": "chart",
+      "chart_type": "histogram",
+      "fields": [
+        "risk_score_bins",
+        "entity_counts"
+      ]
+    },
+    {
+      "id": "top_risks",
+      "title": "Top 10 High-Risk Entities",
+      "type": "table",
+      "fields": [
+        "entity_id",
+        "entity_name",
+        "risk_score",
+        "risk_category",
+        "primary_risk_factors"
+      ]
+    },
+    {
+      "id": "risk_trends",
+      "title": "Risk Trends",
+      "type": "chart",
+      "chart_type": "line",
+      "fields": [
+        "dates",
+        "average_risk_scores",
+        "high_risk_counts"
+      ]
+    },
+    {
+      "id": "recommendations",
+      "title": "Risk Management Recommendations",
+      "type": "text",
+      "fields": [
+        "key_findings",
+        "action_items",
+        "monitoring_priorities"
+      ]
+    }
+  ],
+  "footer": {
+    "fields": [
+      "generated_by",
+      "generation_timestamp",
+      "report_version",
+      "confidentiality_notice"
+    ]
+  }
+}
