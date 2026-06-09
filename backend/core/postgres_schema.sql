@@ -9,7 +9,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- USERS AND PERMISSIONS
 -- ============================================================================
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     username VARCHAR(100) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -22,15 +22,15 @@ CREATE TABLE users (
     last_login TIMESTAMP
 );
 
-CREATE INDEX idx_users_username ON users(username);
-CREATE INDEX idx_users_email ON users(email);
-CREATE INDEX idx_users_role ON users(role);
+CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
 
 -- ============================================================================
 -- PORTFOLIOS
 -- ============================================================================
 
-CREATE TABLE portfolios (
+CREATE TABLE IF NOT EXISTS portfolios (
     portfolio_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     portfolio_name VARCHAR(255) NOT NULL,
     portfolio_type VARCHAR(50) NOT NULL,
@@ -44,15 +44,15 @@ CREATE TABLE portfolios (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_portfolios_owner ON portfolios(owner_id);
-CREATE INDEX idx_portfolios_type ON portfolios(portfolio_type);
-CREATE INDEX idx_portfolios_status ON portfolios(status);
+CREATE INDEX IF NOT EXISTS idx_portfolios_owner ON portfolios(owner_id);
+CREATE INDEX IF NOT EXISTS idx_portfolios_type ON portfolios(portfolio_type);
+CREATE INDEX IF NOT EXISTS idx_portfolios_status ON portfolios(status);
 
 -- ============================================================================
 -- PORTFOLIO POSITIONS
 -- ============================================================================
 
-CREATE TABLE portfolio_positions (
+CREATE TABLE IF NOT EXISTS portfolio_positions (
     position_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     portfolio_id UUID NOT NULL REFERENCES portfolios(portfolio_id) ON DELETE CASCADE,
     asset_id VARCHAR(50) NOT NULL,
@@ -68,15 +68,15 @@ CREATE TABLE portfolio_positions (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_positions_portfolio ON portfolio_positions(portfolio_id);
-CREATE INDEX idx_positions_asset ON portfolio_positions(asset_id);
-CREATE INDEX idx_positions_date ON portfolio_positions(as_of_date);
+CREATE INDEX IF NOT EXISTS idx_positions_portfolio ON portfolio_positions(portfolio_id);
+CREATE INDEX IF NOT EXISTS idx_positions_asset ON portfolio_positions(asset_id);
+CREATE INDEX IF NOT EXISTS idx_positions_date ON portfolio_positions(as_of_date);
 
 -- ============================================================================
 -- TRANSACTIONS
 -- ============================================================================
 
-CREATE TABLE transactions (
+CREATE TABLE IF NOT EXISTS transactions (
     transaction_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     portfolio_id UUID NOT NULL REFERENCES portfolios(portfolio_id) ON DELETE CASCADE,
     transaction_type VARCHAR(50) NOT NULL,
@@ -93,17 +93,17 @@ CREATE TABLE transactions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_transactions_portfolio ON transactions(portfolio_id);
-CREATE INDEX idx_transactions_asset ON transactions(asset_id);
-CREATE INDEX idx_transactions_date ON transactions(transaction_date);
-CREATE INDEX idx_transactions_counterparty ON transactions(counterparty_id);
-CREATE INDEX idx_transactions_type ON transactions(transaction_type);
+CREATE INDEX IF NOT EXISTS idx_transactions_portfolio ON transactions(portfolio_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_asset ON transactions(asset_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(transaction_date);
+CREATE INDEX IF NOT EXISTS idx_transactions_counterparty ON transactions(counterparty_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_type ON transactions(transaction_type);
 
 -- ============================================================================
 -- COUNTERPARTIES
 -- ============================================================================
 
-CREATE TABLE counterparties (
+CREATE TABLE IF NOT EXISTS counterparties (
     counterparty_id VARCHAR(100) PRIMARY KEY,
     counterparty_name VARCHAR(255) NOT NULL,
     counterparty_type VARCHAR(50) NOT NULL,
@@ -117,15 +117,15 @@ CREATE TABLE counterparties (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_counterparties_type ON counterparties(counterparty_type);
-CREATE INDEX idx_counterparties_rating ON counterparties(credit_rating);
-CREATE INDEX idx_counterparties_country ON counterparties(country);
+CREATE INDEX IF NOT EXISTS idx_counterparties_type ON counterparties(counterparty_type);
+CREATE INDEX IF NOT EXISTS idx_counterparties_rating ON counterparties(credit_rating);
+CREATE INDEX IF NOT EXISTS idx_counterparties_country ON counterparties(country);
 
 -- ============================================================================
 -- MARKET DATA
 -- ============================================================================
 
-CREATE TABLE market_data (
+CREATE TABLE IF NOT EXISTS market_data (
     market_data_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     asset_id VARCHAR(50) NOT NULL,
     data_type VARCHAR(50) NOT NULL,
@@ -139,15 +139,15 @@ CREATE TABLE market_data (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_market_data_asset ON market_data(asset_id);
-CREATE INDEX idx_market_data_timestamp ON market_data(timestamp);
-CREATE INDEX idx_market_data_asset_time ON market_data(asset_id, timestamp);
+CREATE INDEX IF NOT EXISTS idx_market_data_asset ON market_data(asset_id);
+CREATE INDEX IF NOT EXISTS idx_market_data_timestamp ON market_data(timestamp);
+CREATE INDEX IF NOT EXISTS idx_market_data_asset_time ON market_data(asset_id, timestamp);
 
 -- ============================================================================
 -- MARKET INDICATORS
 -- ============================================================================
 
-CREATE TABLE market_indicators (
+CREATE TABLE IF NOT EXISTS market_indicators (
     indicator_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     indicator_name VARCHAR(100) NOT NULL,
     indicator_type VARCHAR(50) NOT NULL,
@@ -157,15 +157,15 @@ CREATE TABLE market_indicators (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_indicators_name ON market_indicators(indicator_name);
-CREATE INDEX idx_indicators_timestamp ON market_indicators(timestamp);
-CREATE INDEX idx_indicators_name_time ON market_indicators(indicator_name, timestamp);
+CREATE INDEX IF NOT EXISTS idx_indicators_name ON market_indicators(indicator_name);
+CREATE INDEX IF NOT EXISTS idx_indicators_timestamp ON market_indicators(timestamp);
+CREATE INDEX IF NOT EXISTS idx_indicators_name_time ON market_indicators(indicator_name, timestamp);
 
 -- ============================================================================
 -- RISK CALCULATIONS
 -- ============================================================================
 
-CREATE TABLE risk_calculations (
+CREATE TABLE IF NOT EXISTS risk_calculations (
     calculation_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     entity_id VARCHAR(100) NOT NULL,
     entity_type VARCHAR(50) NOT NULL,
@@ -184,16 +184,16 @@ CREATE TABLE risk_calculations (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_risk_calc_entity ON risk_calculations(entity_id);
-CREATE INDEX idx_risk_calc_type ON risk_calculations(calculation_type);
-CREATE INDEX idx_risk_calc_timestamp ON risk_calculations(calculation_timestamp);
-CREATE INDEX idx_risk_calc_entity_time ON risk_calculations(entity_id, calculation_timestamp);
+CREATE INDEX IF NOT EXISTS idx_risk_calc_entity ON risk_calculations(entity_id);
+CREATE INDEX IF NOT EXISTS idx_risk_calc_type ON risk_calculations(calculation_type);
+CREATE INDEX IF NOT EXISTS idx_risk_calc_timestamp ON risk_calculations(calculation_timestamp);
+CREATE INDEX IF NOT EXISTS idx_risk_calc_entity_time ON risk_calculations(entity_id, calculation_timestamp);
 
 -- ============================================================================
 -- RISK DNA
 -- ============================================================================
 
-CREATE TABLE risk_dna (
+CREATE TABLE IF NOT EXISTS risk_dna (
     dna_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     entity_id VARCHAR(100) NOT NULL,
     entity_type VARCHAR(50) NOT NULL,
@@ -205,14 +205,14 @@ CREATE TABLE risk_dna (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_risk_dna_entity ON risk_dna(entity_id);
-CREATE INDEX idx_risk_dna_timestamp ON risk_dna(generation_timestamp);
+CREATE INDEX IF NOT EXISTS idx_risk_dna_entity ON risk_dna(entity_id);
+CREATE INDEX IF NOT EXISTS idx_risk_dna_timestamp ON risk_dna(generation_timestamp);
 
 -- ============================================================================
 -- RISK ALERTS
 -- ============================================================================
 
-CREATE TABLE risk_alerts (
+CREATE TABLE IF NOT EXISTS risk_alerts (
     alert_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     entity_id VARCHAR(100) NOT NULL,
     entity_type VARCHAR(50) NOT NULL,
@@ -230,17 +230,17 @@ CREATE TABLE risk_alerts (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_alerts_entity ON risk_alerts(entity_id);
-CREATE INDEX idx_alerts_type ON risk_alerts(alert_type);
-CREATE INDEX idx_alerts_severity ON risk_alerts(severity);
-CREATE INDEX idx_alerts_timestamp ON risk_alerts(alert_timestamp);
-CREATE INDEX idx_alerts_acknowledged ON risk_alerts(acknowledged);
+CREATE INDEX IF NOT EXISTS idx_alerts_entity ON risk_alerts(entity_id);
+CREATE INDEX IF NOT EXISTS idx_alerts_type ON risk_alerts(alert_type);
+CREATE INDEX IF NOT EXISTS idx_alerts_severity ON risk_alerts(severity);
+CREATE INDEX IF NOT EXISTS idx_alerts_timestamp ON risk_alerts(alert_timestamp);
+CREATE INDEX IF NOT EXISTS idx_alerts_acknowledged ON risk_alerts(acknowledged);
 
 -- ============================================================================
 -- MODEL METADATA
 -- ============================================================================
 
-CREATE TABLE model_metadata (
+CREATE TABLE IF NOT EXISTS model_metadata (
     model_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     model_name VARCHAR(255) NOT NULL,
     model_type VARCHAR(100) NOT NULL,
@@ -254,15 +254,15 @@ CREATE TABLE model_metadata (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_model_name ON model_metadata(model_name);
-CREATE INDEX idx_model_type ON model_metadata(model_type);
-CREATE INDEX idx_model_active ON model_metadata(is_active);
+CREATE INDEX IF NOT EXISTS idx_model_name ON model_metadata(model_name);
+CREATE INDEX IF NOT EXISTS idx_model_type ON model_metadata(model_type);
+CREATE INDEX IF NOT EXISTS idx_model_active ON model_metadata(is_active);
 
 -- ============================================================================
 -- AUDIT LOG
 -- ============================================================================
 
-CREATE TABLE audit_log (
+CREATE TABLE IF NOT EXISTS audit_log (
     log_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES users(user_id),
     action VARCHAR(100) NOT NULL,
@@ -275,9 +275,9 @@ CREATE TABLE audit_log (
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_audit_user ON audit_log(user_id);
-CREATE INDEX idx_audit_action ON audit_log(action);
-CREATE INDEX idx_audit_timestamp ON audit_log(timestamp);
+CREATE INDEX IF NOT EXISTS idx_audit_user ON audit_log(user_id);
+CREATE INDEX IF NOT EXISTS idx_audit_action ON audit_log(action);
+CREATE INDEX IF NOT EXISTS idx_audit_timestamp ON audit_log(timestamp);
 
 -- ============================================================================
 -- FUNCTIONS AND TRIGGERS
@@ -293,19 +293,19 @@ END;
 $$ language 'plpgsql';
 
 -- Apply update trigger to relevant tables
-CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users
+CREATE OR REPLACE TRIGGER update_users_updated_at BEFORE UPDATE ON users
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_portfolios_updated_at BEFORE UPDATE ON portfolios
+CREATE OR REPLACE TRIGGER update_portfolios_updated_at BEFORE UPDATE ON portfolios
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_positions_updated_at BEFORE UPDATE ON portfolio_positions
+CREATE OR REPLACE TRIGGER update_positions_updated_at BEFORE UPDATE ON portfolio_positions
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_counterparties_updated_at BEFORE UPDATE ON counterparties
+CREATE OR REPLACE TRIGGER update_counterparties_updated_at BEFORE UPDATE ON counterparties
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_model_metadata_updated_at BEFORE UPDATE ON model_metadata
+CREATE OR REPLACE TRIGGER update_model_metadata_updated_at BEFORE UPDATE ON model_metadata
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- ============================================================================

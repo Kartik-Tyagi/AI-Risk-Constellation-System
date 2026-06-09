@@ -3,7 +3,8 @@
 # Master Training Script for AI Risk Constellation System
 # This script trains all models in sequence with proper logging
 
-set -e  # Exit on error
+set -e          # Exit on error
+set -o pipefail # Catch errors in pipes
 
 echo "=========================================="
 echo "AI Risk Constellation System - Training"
@@ -31,17 +32,20 @@ log() {
 }
 
 # Function to train a model
+# Usage: train_model <model_name> <script_name> [extra args...]
 train_model() {
     local model_name=$1
     local script_name=$2
-    
+    shift 2
+    local extra_args="$*"
+
     log "=========================================="
     log "Training: $model_name"
     log "=========================================="
-    
+
     if [ -f "$SCRIPT_DIR/$script_name" ]; then
-        python "$SCRIPT_DIR/$script_name" 2>&1 | tee -a "$LOG_FILE"
-        
+        python "$SCRIPT_DIR/$script_name" $extra_args 2>&1 | tee -a "$LOG_FILE"
+
         if [ $? -eq 0 ]; then
             log "✓ $model_name training completed successfully"
         else
@@ -52,7 +56,7 @@ train_model() {
         log "⚠ Script not found: $script_name"
         return 1
     fi
-    
+
     log ""
 }
 
@@ -88,7 +92,8 @@ else
 fi
 
 # 3. Train Temporal GNN (already exists)
-if train_model "Temporal GNN" "train_temporal_gnn.py"; then
+TEMPORAL_DATA_DIR="$PROJECT_ROOT/data/synthetic"
+if train_model "Temporal GNN" "train_temporal_gnn.py" --data_dir "$TEMPORAL_DATA_DIR"; then
     ((MODELS_TRAINED++))
 else
     ((MODELS_FAILED++))

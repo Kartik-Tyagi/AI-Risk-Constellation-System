@@ -1,15 +1,15 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
-  Drawer,
+  Box,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Box,
   Typography,
   Divider,
+  Tooltip,
 } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
@@ -19,13 +19,14 @@ import {
 } from '@mui/icons-material';
 import { useApp } from '../../context/AppContext';
 
-const DRAWER_WIDTH = 240;
+const DRAWER_WIDTH = 220;
+const RAIL_WIDTH = 56;
 
 const menuItems = [
-  { path: '/dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
-  { path: '/constellation', label: 'Risk Constellation', icon: <ConstellationIcon /> },
-  { path: '/portfolio', label: 'Portfolio Analysis', icon: <PortfolioIcon /> },
-  { path: '/settings', label: 'Settings', icon: <SettingsIcon /> },
+  { path: '/dashboard', label: 'Dashboard', icon: <DashboardIcon fontSize="small" /> },
+  { path: '/constellation', label: 'Risk Constellation', icon: <ConstellationIcon fontSize="small" /> },
+  { path: '/portfolio', label: 'Portfolio Analysis', icon: <PortfolioIcon fontSize="small" /> },
+  { path: '/settings', label: 'Settings', icon: <SettingsIcon fontSize="small" /> },
 ];
 
 const Navigation = () => {
@@ -33,69 +34,108 @@ const Navigation = () => {
   const location = useLocation();
   const { sidebarOpen } = useApp();
 
+  const width = sidebarOpen ? DRAWER_WIDTH : RAIL_WIDTH;
+
   return (
-    <Drawer
-      variant="permanent"
+    <Box
       sx={{
-        width: sidebarOpen ? DRAWER_WIDTH : 0,
+        width,
         flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: DRAWER_WIDTH,
-          boxSizing: 'border-box',
-          backgroundColor: 'background.paper',
-          borderRight: '1px solid',
-          borderColor: 'divider',
-        },
+        height: '100vh',
+        backgroundColor: 'background.paper',
+        borderRight: '1px solid',
+        borderColor: 'divider',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        transition: 'width 200ms ease',
       }}
     >
-      <Box sx={{ p: 3 }}>
-        <Typography variant="h5" component="div" sx={{ fontWeight: 600 }}>
-          Risk Constellation
-        </Typography>
-        <Typography variant="caption" color="text.secondary">
-          AI-Powered Risk Analysis
-        </Typography>
+      {/* Logo area */}
+      <Box
+        sx={{
+          height: 48,
+          display: 'flex',
+          alignItems: 'center',
+          px: sidebarOpen ? 2 : 0,
+          justifyContent: sidebarOpen ? 'flex-start' : 'center',
+          flexShrink: 0,
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+        }}
+      >
+        <BubbleChart sx={{ color: 'primary.main', fontSize: 20 }} />
+        {sidebarOpen && (
+          <Box sx={{ ml: 1.5, overflow: 'hidden' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, lineHeight: 1.2, whiteSpace: 'nowrap' }}>
+              Risk Constellation
+            </Typography>
+            <Typography variant="caption" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
+              AI Risk Analysis
+            </Typography>
+          </Box>
+        )}
       </Box>
-      
-      <Divider />
-      
-      <List sx={{ px: 1, py: 2 }}>
-        {menuItems.map((item) => (
-          <ListItem key={item.path} disablePadding sx={{ mb: 0.5 }}>
+
+      {/* Nav items */}
+      <List sx={{ px: sidebarOpen ? 1 : 0.5, py: 1, flexGrow: 1 }}>
+        {menuItems.map((item) => {
+          const active = location.pathname === item.path;
+          const btn = (
             <ListItemButton
-              selected={location.pathname === item.path}
+              selected={active}
               onClick={() => navigate(item.path)}
               sx={{
                 borderRadius: 1,
+                minHeight: 40,
+                justifyContent: sidebarOpen ? 'flex-start' : 'center',
+                px: sidebarOpen ? 1.5 : 1,
                 '&.Mui-selected': {
                   backgroundColor: 'primary.main',
                   color: 'primary.contrastText',
-                  '&:hover': {
-                    backgroundColor: 'primary.dark',
-                  },
-                  '& .MuiListItemIcon-root': {
-                    color: 'primary.contrastText',
-                  },
+                  '&:hover': { backgroundColor: 'primary.dark' },
+                  '& .MuiListItemIcon-root': { color: 'primary.contrastText' },
                 },
               }}
             >
               <ListItemIcon
                 sx={{
-                  minWidth: 40,
-                  color: location.pathname === item.path ? 'inherit' : 'text.secondary',
+                  minWidth: sidebarOpen ? 36 : 'auto',
+                  color: active ? 'inherit' : 'text.secondary',
+                  justifyContent: 'center',
                 }}
               >
                 {item.icon}
               </ListItemIcon>
-              <ListItemText primary={item.label} />
+              {sidebarOpen && (
+                <ListItemText
+                  primary={item.label}
+                  primaryTypographyProps={{ variant: 'body2', noWrap: true }}
+                />
+              )}
             </ListItemButton>
-          </ListItem>
-        ))}
+          );
+
+          return (
+            <ListItem key={item.path} disablePadding sx={{ mb: 0.25, display: 'block' }}>
+              {sidebarOpen ? btn : (
+                <Tooltip title={item.label} placement="right">
+                  {btn}
+                </Tooltip>
+              )}
+            </ListItem>
+          );
+        })}
       </List>
-    </Drawer>
+    </Box>
   );
 };
 
-export default Navigation;
+// Inline icon to avoid extra import
+const BubbleChart = (props) => (
+  <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" style={{ fontSize: props.sx?.fontSize || 24 }}>
+    <path d="M7 10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm8.01-7c1.65 0 2.99-1.34 2.99-3S16.66 3 15.01 3C13.36 3 12 4.34 12 6s1.36 3 3.01 3zm0-4c.55 0 .99.45.99 1s-.44 1-.99 1c-.56 0-1.01-.45-1.01-1s.45-1 1.01-1zM18 14.5c0 1.38 1.12 2.5 2.5 2.5S23 15.88 23 14.5 21.88 12 20.5 12 18 13.12 18 14.5zm3 0c0 .28-.22.5-.5.5s-.5-.22-.5-.5.22-.5.5-.5.5.22.5.5z" />
+  </svg>
+);
 
-// Made with Bob
+export default Navigation;

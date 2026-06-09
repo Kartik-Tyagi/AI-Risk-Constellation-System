@@ -131,14 +131,22 @@ class RiskCascadePredictor(nn.Module):
         )
         
         # Cascade propagation network
-        self.propagation_net = nn.ModuleList([
-            nn.Sequential(
+        # Step 0 receives concatenated node+temporal embedding (hidden_dim * 2)
+        # Steps 1+ receive output of previous step (hidden_dim)
+        self.propagation_net = nn.ModuleList(
+            [nn.Sequential(
                 nn.Linear(hidden_dim * 2, hidden_dim),
                 nn.ReLU(),
                 nn.Dropout(dropout),
                 nn.Linear(hidden_dim, hidden_dim)
-            ) for _ in range(num_cascade_steps)
-        ])
+            )] +
+            [nn.Sequential(
+                nn.Linear(hidden_dim, hidden_dim),
+                nn.ReLU(),
+                nn.Dropout(dropout),
+                nn.Linear(hidden_dim, hidden_dim)
+            ) for _ in range(num_cascade_steps - 1)]
+        )
         
         # Output heads for each cascade step
         self.output_heads = nn.ModuleList([

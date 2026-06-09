@@ -59,8 +59,7 @@ class TemporalGNNTrainer:
             self.optimizer,
             mode='min',
             factor=0.5,
-            patience=5,
-            verbose=True
+            patience=5
         )
         
         self.history = {
@@ -333,7 +332,15 @@ def main():
         prediction_horizon=args.prediction_horizon,
         batch_size=args.batch_size
     )
-    
+
+    if len(train_loader.dataset) == 0:
+        logger.warning(
+            f"No temporal graph snapshots found in '{args.data_dir}'. "
+            "Training requires pre-processed 'snapshot_*.pt' files. "
+            "Skipping Temporal GNN training."
+        )
+        return
+
     # Create model
     logger.info("Creating model...")
     model = create_model(args)

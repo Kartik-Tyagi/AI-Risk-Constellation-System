@@ -12,10 +12,19 @@ import {
   Chip,
 } from '@mui/material';
 import { Close as CloseIcon, Settings as SettingsIcon } from '@mui/icons-material';
-import { useRiskData } from '../../hooks/useRiskData';
+import { portfolioApi } from '../../services/api';
 
 const PortfolioWidget = ({ widgetId, title, onRemove, onSettings, settings }) => {
-  const { data: portfolios, loading, error } = useRiskData('/portfolios');
+  const [portfolioList, setPortfolioList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    portfolioApi.getAll()
+      .then(res => setPortfolioList(res.data?.portfolios || []))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   const getRiskColor = (level) => {
     switch (level?.toLowerCase()) {
@@ -57,23 +66,26 @@ const PortfolioWidget = ({ widgetId, title, onRemove, onSettings, settings }) =>
       </Box>
 
       <List sx={{ flexGrow: 1, overflow: 'auto' }}>
-        {portfolios?.slice(0, 5).map((portfolio, idx) => (
-          <ListItem
-            key={idx}
-            secondaryAction={
-              <Chip
-                label={portfolio.risk_level || 'N/A'}
-                color={getRiskColor(portfolio.risk_level)}
-                size="small"
+        {portfolioList.slice(0, 5).map((portfolio, idx) => {
+          const riskLevel = portfolio.metadata?.risk_level || portfolio.risk_level;
+          return (
+            <ListItem
+              key={idx}
+              secondaryAction={
+                <Chip
+                  label={riskLevel || 'N/A'}
+                  color={getRiskColor(riskLevel)}
+                  size="small"
+                />
+              }
+            >
+              <ListItemText
+                primary={portfolio.name || `Portfolio ${idx + 1}`}
+                secondary={`Value: $${(portfolio.total_value || 0).toLocaleString()}`}
               />
-            }
-          >
-            <ListItemText
-              primary={portfolio.name || `Portfolio ${idx + 1}`}
-              secondary={`Value: $${(portfolio.value || 0).toLocaleString()}`}
-            />
-          </ListItem>
-        ))}
+            </ListItem>
+          );
+        })}
       </List>
     </Paper>
   );

@@ -271,12 +271,33 @@ class CounterpartyGenerator:
         
         # Save metadata
         with open(output_path / 'counterparty_metadata.json', 'w') as f:
-            # Convert Timestamp to string for JSON serialization
+            # Convert non-serializable types for JSON
             for cp in counterparty_metadata:
                 cp['last_updated'] = str(cp['last_updated'])
+                cp['is_systemically_important'] = bool(cp['is_systemically_important'])
             json.dump(counterparty_metadata, f, indent=2)
         
         # Save network graph
+        # Convert numpy/pandas types to Python natives so GEXF writer accepts them
+        def _to_native(val):
+            if isinstance(val, (np.bool_,)):
+                return bool(val)
+            elif isinstance(val, (np.integer,)):
+                return int(val)
+            elif isinstance(val, (np.floating,)):
+                return float(val)
+            elif isinstance(val, (np.str_,)):
+                return str(val)
+            elif isinstance(val, pd.Timestamp):
+                return str(val)
+            return val
+
+        for node, attrs in G.nodes(data=True):
+            for key in list(attrs.keys()):
+                attrs[key] = _to_native(attrs[key])
+        for u, v, attrs in G.edges(data=True):
+            for key in list(attrs.keys()):
+                attrs[key] = _to_native(attrs[key])
         nx.write_gexf(G, output_path / 'counterparty_network.gexf')
         
         print(f"✅ Counterparty data generation complete!")

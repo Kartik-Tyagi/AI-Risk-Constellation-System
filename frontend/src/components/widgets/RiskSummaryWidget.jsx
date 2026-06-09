@@ -17,17 +17,20 @@ import {
   TrendingDown as TrendingDownIcon,
   Warning as WarningIcon,
 } from '@mui/icons-material';
-import { useRiskData } from '../../hooks/useRiskData';
+import { get } from '../../services/api';
 
 const RiskSummaryWidget = ({ widgetId, title, onRemove, onSettings, settings }) => {
-  const { data: riskData, loading, error } = useRiskData('/risk/summary');
   const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (riskData) {
-      setSummary(riskData);
-    }
-  }, [riskData]);
+    setLoading(true);
+    get('/risk/summary')
+      .then(res => setSummary(res.data))
+      .catch(err => setError(err.message || 'Failed to load'))
+      .finally(() => setLoading(false));
+  }, []);
 
   const getRiskColor = (level) => {
     switch (level?.toLowerCase()) {

@@ -102,7 +102,7 @@ class CacheManager:
         """
         # Sort keys for consistent hashing
         features_str = json.dumps(features, sort_keys=True)
-        return hashlib.md5(features_str.encode()).hexdigest()[:16]
+        return hashlib.md5(features_str.encode(), usedforsecurity=False).hexdigest()[:16]
     
     def get(self, entity_id: str, features: Optional[Dict[str, Any]] = None) -> Optional[Dict[str, Any]]:
         """

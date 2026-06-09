@@ -41,7 +41,7 @@ class QueryCache:
     def _generate_key(self, query: str, params: Optional[tuple] = None) -> str:
         """Generate cache key from query and parameters"""
         key_str = f"{query}:{params}"
-        return hashlib.md5(key_str.encode()).hexdigest()
+        return hashlib.md5(key_str.encode(), usedforsecurity=False).hexdigest()
     
     def get(self, query: str, params: Optional[tuple] = None) -> Optional[Any]:
         """Get cached result"""
@@ -580,7 +580,7 @@ def cached_query(ttl: int = 300):
         def wrapper(*args, **kwargs):
             # Generate cache key
             key = f"{func.__name__}:{args}:{kwargs}"
-            key_hash = hashlib.md5(key.encode()).hexdigest()
+            key_hash = hashlib.md5(key.encode(), usedforsecurity=False).hexdigest()
             
             # Check cache
             if key_hash in cache:

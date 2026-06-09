@@ -4,6 +4,7 @@ Dependency injection for database connections, cache, and ML models
 """
 
 import logging
+import os
 from typing import Optional, Generator
 from functools import lru_cache
 
@@ -32,11 +33,11 @@ def get_postgres_connector() -> PostgreSQLConnector:
     
     if _postgres_connector is None:
         _postgres_connector = PostgreSQLConnector(
-            host="localhost",
-            port=5432,
-            database="risk_constellation",
-            user="postgres",
-            password="postgres"
+            host=os.getenv('POSTGRES_HOST', 'localhost'),
+            port=int(os.getenv('POSTGRES_PORT', '5432')),
+            database=os.getenv('POSTGRES_DB', 'risk_constellation'),
+            user=os.getenv('POSTGRES_USER', 'postgres'),
+            password=os.getenv('POSTGRES_PASSWORD', 'postgres')
         )
         logger.info("PostgreSQL connector initialized")
     
@@ -55,9 +56,9 @@ def get_neo4j_connector() -> Neo4jConnector:
     
     if _neo4j_connector is None:
         _neo4j_connector = Neo4jConnector(
-            uri="bolt://localhost:7687",
-            user="neo4j",
-            password="neo4jpassword"
+            uri=os.getenv('NEO4J_URI', 'bolt://localhost:7687'),
+            user=os.getenv('NEO4J_USER', 'neo4j'),
+            password=os.getenv('NEO4J_PASSWORD', 'password')
         )
         logger.info("Neo4j connector initialized")
     
@@ -76,8 +77,9 @@ def get_cache_service() -> CacheService:
     
     if _cache_service is None:
         _cache_service = CacheService(
-            host="localhost",
-            port=6379,
+            host=os.getenv('REDIS_HOST', 'localhost'),
+            port=int(os.getenv('REDIS_PORT', '6379')),
+            password=os.getenv('REDIS_PASSWORD', None),
             db=0
         )
         logger.info("Cache service initialized")

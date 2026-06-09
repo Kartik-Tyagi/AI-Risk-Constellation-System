@@ -6,7 +6,7 @@ echo "🛑 Stopping AI Risk Constellation System..."
 
 # Stop backend (uvicorn)
 echo "Stopping backend..."
-pkill -f "uvicorn api.main:app" || echo "Backend not running"
+pkill -f "uvicorn backend.api.main:app" || pkill -f "uvicorn.*8000" || echo "Backend not running"
 
 # Stop frontend (vite)
 echo "Stopping frontend..."

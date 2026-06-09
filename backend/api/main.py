@@ -4,9 +4,21 @@ Main entry point for the AI Risk Constellation System API
 """
 
 import logging
+import os
 import time
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import AsyncGenerator
+
+# Load .env from project root if present (before any other imports that read env vars)
+_env_path = Path(__file__).resolve().parents[2] / ".env"
+if _env_path.exists():
+    with open(_env_path) as _f:
+        for _line in _f:
+            _line = _line.strip()
+            if _line and not _line.startswith("#") and "=" in _line:
+                _k, _, _v = _line.partition("=")
+                os.environ.setdefault(_k.strip(), _v.strip())
 
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware

@@ -10,10 +10,15 @@ import {
   CardContent,
 } from '@mui/material';
 import { Close as CloseIcon, Settings as SettingsIcon } from '@mui/icons-material';
-import { useRiskData } from '../../hooks/useRiskData';
+import { useState, useEffect } from 'react';
+import { get } from '../../services/api';
 
 const MetricsWidget = ({ widgetId, title, onRemove, onSettings, settings }) => {
-  const { data: metrics } = useRiskData('/risk/metrics');
+  const [metrics, setMetrics] = useState(null);
+
+  useEffect(() => {
+    get('/risk/metrics').then(res => setMetrics(res.data)).catch(() => {});
+  }, []);
 
   const metricsList = [
     { label: 'Avg Risk Score', value: metrics?.avg_risk_score?.toFixed(2) || '0.00', unit: '' },

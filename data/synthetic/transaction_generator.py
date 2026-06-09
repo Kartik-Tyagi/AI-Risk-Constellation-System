@@ -53,11 +53,11 @@ class TransactionGenerator:
         transactions = []
         
         # Generate date range
-        date_range = pd.date_range(start=self.start_date, end=self.end_date, freq='H')
+        date_range = pd.date_range(start=self.start_date, end=self.end_date, freq='h')
         
         for i in range(num_transactions):
             # Random date and time
-            transaction_date = np.random.choice(date_range)
+            transaction_date = date_range[np.random.randint(len(date_range))]
             
             # Random portfolio and counterparty
             portfolio_id = np.random.choice(self.portfolio_ids)

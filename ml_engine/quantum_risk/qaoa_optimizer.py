@@ -188,9 +188,10 @@ class QAOAOptimizer:
             state = self._apply_problem_hamiltonian(state, gamma, hamiltonian_matrix)
             state = self._apply_mixer_hamiltonian(state, beta)
         
-        # Calculate probabilities
+        # Calculate probabilities — normalise to guard against floating-point drift
         probabilities = np.abs(state) ** 2
-        
+        probabilities = probabilities / probabilities.sum()
+
         # Sample bitstrings
         samples = np.random.choice(dim, size=num_samples, p=probabilities)
         

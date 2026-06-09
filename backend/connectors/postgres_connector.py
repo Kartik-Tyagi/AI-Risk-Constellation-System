@@ -30,11 +30,11 @@ class PostgreSQLConnector:
     
     def __init__(
         self,
-        host: str = 'localhost',
-        port: int = 5432,
-        database: str = 'risk_constellation',
-        user: str = 'postgres',
-        password: str = 'postgres',
+        host: str = os.getenv('POSTGRES_HOST', 'localhost'),
+        port: int = int(os.getenv('POSTGRES_PORT', '5432')),
+        database: str = os.getenv('POSTGRES_DB', 'risk_constellation'),
+        user: str = os.getenv('POSTGRES_USER', 'postgres'),
+        password: str = os.getenv('POSTGRES_PASSWORD', 'postgres'),
         min_connections: int = 1,
         max_connections: int = 10
     ):

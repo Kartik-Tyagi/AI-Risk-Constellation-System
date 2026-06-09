@@ -26,9 +26,9 @@ class Neo4jConnector:
     
     def __init__(
         self,
-        uri: str = 'bolt://localhost:7687',
-        user: str = 'neo4j',
-        password: str = 'password',
+        uri: str = os.getenv('NEO4J_URI', 'bolt://localhost:7687'),
+        user: str = os.getenv('NEO4J_USER', 'neo4j'),
+        password: str = os.getenv('NEO4J_PASSWORD', 'password'),
         max_connection_lifetime: int = 3600,
         max_connection_pool_size: int = 50,
         connection_acquisition_timeout: int = 60

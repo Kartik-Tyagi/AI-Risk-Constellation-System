@@ -30,11 +30,11 @@ class MLflowConfig:
             experiment_name: Name of the experiment
             artifact_location: Location to store artifacts
         """
-        # Default to local file-based tracking
+        # Default to SQLite-based tracking (file store is deprecated in newer MLflow)
         if tracking_uri is None:
             mlruns_dir = Path(__file__).parent.parent.parent / "mlruns"
             mlruns_dir.mkdir(exist_ok=True)
-            tracking_uri = f"file://{mlruns_dir.absolute()}"
+            tracking_uri = f"sqlite:///{mlruns_dir.absolute()}/mlflow.db"
         
         self.tracking_uri = tracking_uri
         self.experiment_name = experiment_name
